@@ -9,7 +9,7 @@ if (!isset($_GET['profession_id'])) {
 
 $profession_id = $_GET['profession_id'];
 
-// Получаем основной список ПВК для профессии
+// получаем основной список ПВК для профессии
 $stmt = $conn->prepare("
     SELECT pvk.id, pvk.name, pvk.description 
     FROM pvk
@@ -21,7 +21,7 @@ $stmt->execute();
 $pvk_list = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-// Получаем списки ПВК от экспертов
+// получаем списки ПВК от экспертов
 $stmt = $conn->prepare("
     SELECT epl.id, epl.expert_id, u.username, pvk.name, epl.priority
     FROM expert_pvk_lists epl
@@ -35,7 +35,7 @@ $stmt->execute();
 $expert_pvk_lists = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-// Проверяем, закреплен ли текущий эксперт за этой профессией
+// проверяем, закреплен ли текущий эксперт за этой профессией
 $is_assigned_expert = false;
 if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert') {
     $stmt = $conn->prepare("SELECT id FROM profession_expert WHERE profession_id = ? AND expert_id = ?");
@@ -46,7 +46,7 @@ if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert') {
     $stmt->close();
 }
 
-// Проверяем, есть ли у эксперта список ПВК
+// проверяем, есть ли у эксперта список ПВК
 $has_expert_list = false;
 if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert') {
     $stmt = $conn->prepare("SELECT id FROM expert_pvk_lists WHERE expert_id = ? AND profession_id = ?");
@@ -69,7 +69,7 @@ if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert') {
     <link rel="stylesheet" href="../assets/css/style1.css">
 </head>
 <body>
-    <!-- Навигационная панель -->
+    <!-- навигационная панель -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <a class="navbar-brand" href="../index.php">ITMO Portal</a>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -104,12 +104,12 @@ if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert') {
         </div>
     </nav>
 
-    <!-- Основной контент -->
+    <!-- основной контент -->
     <div class="container mt-5 pt-5">
         <h1 class="text-center mb-4">ПВК для профессии</h1>
         <a href="professii.php" class="btn btn-secondary mb-4">Назад</a>
 
-        <!-- Основной список ПВК -->
+        <!-- основной список ПВК -->
         <?php if (empty($expert_pvk_lists)): ?>
             <h2>Основной список ПВК</h2>
             <ul class="list-group mb-4">
@@ -122,7 +122,7 @@ if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert') {
             </ul>
         <?php endif; ?>
 
-        <!-- Списки ПВК от экспертов -->
+        <!-- списки ПВК от экспертов -->
         <h2>Списки ПВК от экспертов</h2>
         <?php if (!empty($expert_pvk_lists)): ?>
             <?php
@@ -167,7 +167,7 @@ if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert') {
             <p class="text-muted">Нет списков ПВК от экспертов.</p>
         <?php endif; ?>
 
-        <!-- Режим конструктора для экспертов -->
+        <!-- режим конструктора для экспертов -->
         <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert' && $is_assigned_expert && !$has_expert_list): ?>
             <h2 class="mt-4">Конструктор списка ПВК</h2>
             <form action="../ajax/savepvklist.php" method="POST">
@@ -195,7 +195,7 @@ if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert') {
         <?php endif; ?>
     </div>
 
-    <!-- Футер -->
+    <!-- футер -->
     <footer class="footer bg-light text-dark mt-5">
         <div class="container py-4">
             <div class="row">
@@ -225,7 +225,7 @@ if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert') {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // Проверка уникальности приоритетов
+        // проверка уникальности приоритетов
         document.querySelector('form').addEventListener('submit', function (e) {
             const priorities = [];
             document.querySelectorAll('input[name^="priority"]').forEach(input => {

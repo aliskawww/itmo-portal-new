@@ -2,6 +2,7 @@
 session_start();
 require '../includes/db.php';
 
+// проверка наличия ID получателя
 if (isset($_GET['receiver_id'])) {
     $receiver_id = $_GET['receiver_id']; 
     $user_id = $_SESSION['user_id'];   

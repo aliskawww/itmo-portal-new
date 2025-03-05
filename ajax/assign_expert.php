@@ -1,11 +1,14 @@
 <?php
+
 session_start();
 require '../includes/db.php';
 
+// проверка прав доступа
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     die("Доступ запрещен.");
 }
 
+// получение данных о профессии и эксперте из POST-запроса
 $profession_id = $_POST['profession_id'];
 $expert_id = $_POST['expert_id'];
 

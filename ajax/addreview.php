@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'expert') {
 
 require '../includes/db.php'; 
 
+// проверка, был ли отправлен POST-запрос
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $expert_id = $_SESSION['user_id']; 
     $profession_id = $_POST['profession_id']; 
@@ -31,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt = $conn->prepare("INSERT INTO reviews (expert_id, profession_id, review) VALUES (?, ?, ?)");
     $stmt->bind_param("iis", $expert_id, $profession_id, $review); 
 
+    // выполнение запроса и проверка успешности добавления отзыва
     if ($stmt->execute()) {
         header("Location: ../pages/professii.php"); 
         exit(); 

@@ -61,7 +61,7 @@ $stmt->close();
         </div>
     </nav>
 
-    <!-- Основной контент -->
+    <!-- основной контент -->
     <div class="container mt-5 pt-5">
         <h1 class="text-center mb-4">Профессии в IT</h1>
         <div class="row">
@@ -72,7 +72,7 @@ $stmt->close();
                             <h5 class="card-title"><?= htmlspecialchars($profession['name']) ?></h5>
                             <p class="card-text"><?= htmlspecialchars($profession['description']) ?></p>
 
-                            <!-- Средняя оценка -->
+                            <!-- средняя оценка -->
                             <?php
                             $stmt = $conn->prepare("SELECT AVG(rating) as avg_rating FROM ratings WHERE profession_id = ?");
                             $stmt->bind_param("i", $profession['id']);
@@ -83,12 +83,12 @@ $stmt->close();
                             ?>
                             <p><strong>Средняя оценка:</strong> <?= $avg_rating ? round($avg_rating, 1) : 'Нет оценок' ?></p>
 
-                            <!-- Ссылки на отзывы и ПВК -->
+                            <!-- ссылки на отзывы и ПВК -->
                             <div class="hidden-content">
                                 <a href="reviews.php?profession_id=<?= $profession['id'] ?>" class="btn btn-outline-dark btn-sm mb-2">Посмотреть отзывы</a>
                                 <a href="pvk.php?profession_id=<?= $profession['id'] ?>" class="btn btn-outline-dark btn-sm mb-2">Посмотреть ПВК</a>
 
-                                <!-- Формы для экспертов -->
+                                <!-- формы для экспертов -->
                                 <?php if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'expert'): ?>
                                     <?php
                                     $stmt = $conn->prepare("SELECT id FROM reviews WHERE expert_id = ? AND profession_id = ?");
@@ -106,7 +106,7 @@ $stmt->close();
                                     $stmt->close();
                                     ?>
 
-                                    <!-- Форма для отзыва -->
+                                    <!-- форма для отзыва -->
                                     <?php if (!$has_review): ?>
                                     <form action="../ajax/addreview.php" method="POST" class="mb-2">
                                         <input type="hidden" name="profession_id" value="<?= $profession['id'] ?>">
@@ -120,7 +120,7 @@ $stmt->close();
 					</div>
 				    <?php endif; ?>
 
-                                    <!-- Форма для оценки -->
+                                    <!-- форма для оценки -->
 				    <?php if (!$has_rating): ?>
                                     <form action="../ajax/addrating.php" method="POST">
                                         <input type="hidden" name="profession_id" value="<?= $profession['id'] ?>">
@@ -142,7 +142,7 @@ $stmt->close();
         </div>
     </div>
 
-    <!-- Футер -->
+    <!-- футер -->
     <footer class="footer bg-light text-dark mt-5">
         <div class="container py-4">
             <div class="row">

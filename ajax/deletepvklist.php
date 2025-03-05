@@ -1,12 +1,14 @@
 <?php
 session_start();
 
+// проверка, авторизован ли пользователь
 if (!isset($_SESSION['user_id'])) {
     die("Доступ запрещен.");
 }
 
 require '../includes/db.php';
 
+// получение данных из POST-запроса
 $list_id = $_POST['list_id'] ?? null;
 $profession_id = $_POST['profession_id'];
 $delete_all = $_POST['delete_all'] ?? 0;
@@ -35,6 +37,7 @@ elseif ($list_id) {
     $result = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 
+    // проверка прав доступа
     if ($_SESSION['user_role'] === 'expert' && $result['expert_id'] !== $_SESSION['user_id']) {
         die("Вы не можете удалить этот список ПВК.");
     }

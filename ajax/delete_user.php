@@ -3,11 +3,12 @@ session_start();
 
 require '../includes/db.php'; 
 
-// проверка прав администратора:
+// проверка прав администратора
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     die("Ошибка: доступ запрещен."); 
 }
 
+// проверка, был ли отправлен POST-запрос
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = intval($_POST['user_id']);
     
